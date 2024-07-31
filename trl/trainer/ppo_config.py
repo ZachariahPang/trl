@@ -74,7 +74,7 @@ class PPOConfig:
     """Use adaptive KL control, otherwise linear"""
     init_kl_coef: Optional[float] = 0.2
     """Initial KL penalty coefficient (used for adaptive and linear control)"""
-    kl_penalty: Literal["kl", "abs", "mse", "full"] = "kl"
+    kl_penalty: Literal["kl", "abs", "mse", "full", "k1", "k2", "k3"] = "kl"
     """kl penalty options: 'kl': model_logp - ref_logp,  'abs': abs(kl),  'mse': mean squared error mse(kl) and 'full': the actual kl for all tokens in the distribution"""
     target: Optional[float] = 6
     """Target KL value for adaptive KL control"""
@@ -172,7 +172,7 @@ class PPOConfig:
                 )
 
         self.total_ppo_epochs = int(np.ceil(self.steps / self.batch_size))
-        assert self.kl_penalty in ["kl", "abs", "mse", "full"]
+        assert self.kl_penalty in ["kl", "abs", "mse", "full", "k1", "k2", "k3"]
 
     def to_dict(self):
         output_dict = {}

@@ -1143,7 +1143,9 @@ class PPOTrainer(BaseTrainer):
             return logprob - ref_logprob
 
         if self.config.kl_penalty == "k2":
-            raise NotImplementedError
+            log_ratio = logprob - ref_logprob
+            kl = 0.5 * log_ratio**2
+            return kl
 
         if self.config.kl_penalty == "k3":
             log_ratio = logprob - ref_logprob

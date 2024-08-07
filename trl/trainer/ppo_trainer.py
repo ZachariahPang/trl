@@ -1148,8 +1148,9 @@ class PPOTrainer(BaseTrainer):
             return kl
 
         if self.config.kl_penalty == "k3":
-            log_ratio = logprob - ref_logprob
-            kl = log_ratio.exp() - 1 - log_ratio
+            # log_ratio = logprob - ref_logprob
+            logr = ref_logprob - logprob
+            kl = logr.exp() - 1 - logr
             return kl
 
         if self.config.kl_penalty == "abs":

@@ -1327,6 +1327,7 @@ class PPOTrainer(BaseTrainer):
             "ppo/mean_non_score_reward": mean_non_score_reward,
             "ppo/mean_scores": mean_scores,
             "ppo/std_scores": std_scores,
+            "mask": mask,
         }
 
         # Log text properties
@@ -1398,6 +1399,7 @@ class PPOTrainer(BaseTrainer):
                 table_rows = [list(r) for r in zip(*batch_list, rewards.cpu().tolist())]
                 logs.update({"game_log": wandb.Table(columns=[*columns_to_log, "reward"], rows=table_rows)})
 
+            stats.pop("mask", None)
             logs.update(stats)
 
             # manually cast in fp32 for bf16 torch tensors

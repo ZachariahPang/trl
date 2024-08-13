@@ -1128,12 +1128,13 @@ class PPOTrainer(BaseTrainer):
             # compute KL penalty (from difference in logprobs)
             kl = self._kl_penalty(logprob, ref_logprob)
             kls.append(kl)
-            non_score_reward = -self.kl_ctl.value * kl
+            ent = -logprob
+            non_score_reward = -self.kl_ctl.value * kl + self.config.entropy_coef * ent
             non_score_rewards.append(non_score_reward)
             reward = non_score_reward.clone()
             last_non_masked_index = mask.nonzero()[-1]
 
-            # reward is preference model score + KL penalty
+            # reward is preference model score + KL penalty + entropy
             reward[last_non_masked_index] += score
             rewards.append(reward)
         return torch.stack(rewards), torch.stack(non_score_rewards), torch.stack(kls)

@@ -173,7 +173,6 @@ class PPOConfig:
                 )
 
         self.total_ppo_epochs = int(np.ceil(self.steps / self.batch_size))
-        assert self.kl_penalty in ["kl", "abs", "mse", "full", "k1", "k2", "k3"]
 
     def to_dict(self):
         output_dict = {}
